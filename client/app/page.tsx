@@ -8,6 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Trophy, Crown } from "lucide-react"
 import { api, handleApiError } from "@/lib/api"
 import { FullPageLoader } from "@/components/loading-spinner"
+import { useIsMobile } from "@/hooks/use-mobile"
+
 
 export default function LeaderboardPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -16,6 +18,7 @@ export default function LeaderboardPage() {
   const [rounds, setRounds] = useState<any[]>([])
   const [Currentleader, setCurrentleader] = useState<any>(null)
   const [tournamentname, setTournamentname] = useState<any>(null)
+  const isMobile = useIsMobile()
 
 
   useEffect(() => {
@@ -72,7 +75,7 @@ export default function LeaderboardPage() {
             <TabsList className="mb-4 bg-amber-950/50">
               {rounds.map((round) => (
                 <TabsTrigger key={round.id} value={round.name}>
-                  {round.name}
+                  {isMobile ? round.name.slice(0, 1)+round.name.slice(-1) : round.name}
                 </TabsTrigger>
               ))}
             </TabsList>

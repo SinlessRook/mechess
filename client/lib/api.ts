@@ -106,7 +106,6 @@ export const api = {
     player.stats.openings = test2.openings;
     player.recentGames = test2.recentGames;
     const data = player;
-    console.log(data);
     setCache(cacheKey, data);
     return data;
   },
@@ -163,4 +162,35 @@ export const handleApiError = (error: unknown): string => {
     return error.message;
   }
   return "An unknown error occurred";
+};
+
+// Utility to refresh API component
+export const refreshApiComponent = async (component: "players" | "playerDetails" | "featuredGames" | "leaderboard") => {
+  switch (component) {
+    case "players":
+      localStorage.removeItem(CACHE_KEYS.ALL_PLAYERS);
+      await api.getPlayers();
+      break;
+
+    case "playerDetails":
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith("chess_tournament_player_")) {
+          localStorage.removeItem(key);
+        }
+      });
+      break;
+
+    case "featuredGames":
+      localStorage.removeItem(CACHE_KEYS.FEATURED_GAMES);
+      await api.getFeaturedGames();
+      break;
+
+    case "leaderboard":
+      localStorage.removeItem(CACHE_KEYS.LEADERBOARD);
+      await api.getLeaderboard();
+      break;
+
+    default:
+      console.warn("Unknown component for refresh");
+  }
 };
