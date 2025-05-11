@@ -37,7 +37,6 @@ def get_leaderboard(request):
     round_ids = set()
 
     for game in games:
-        print(game)
         if game.round not in round_ids:
             round_ids.add(game.round)
             rounds.append({"id": game.round, "name": f"Round {game.round}"})

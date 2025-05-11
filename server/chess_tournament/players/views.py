@@ -75,7 +75,6 @@ def fetch_games(player):
     games = (Game.objects.filter(Q(ply1=player) | Q(ply2=player)).order_by('-id')[:6]
              .values("ply1_id", "ply2__name", "result", "tournament__name")
     )
-    print(("games")) 
     return [
         {
             "opponent": g["ply2__name"],

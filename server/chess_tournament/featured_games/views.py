@@ -44,7 +44,6 @@ def format_featured(games):
     # data[5] is the image
 
     data = analyse(games[7],games[8],games[9])
-    print(data)
     return {
             "id": games[0],
             "white": games[1],
@@ -74,7 +73,6 @@ def get_featured_games(request):
         temp.extend([games[i].game.ply1.name,games[i].game.ply2.name,games[i].game.tournament.name,games[i].game.result])
         temp.extend([games[i].like,games[i].dislike])
         temp.extend([games[i].game.ply1.chess_id,games[i].game.ply2.chess_id,games[i].game.link])
-        print(temp)
         data.append(format_featured(temp))
 
     return Response({"games": data}, status=200)
