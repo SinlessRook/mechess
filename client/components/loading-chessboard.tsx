@@ -259,7 +259,7 @@ export function ChessLoader({ text = "Loading..." }: { text?: string }) {
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 p-4 rounded-lg shadow w-64 text-center md:block md:right-12 md:top-12">
+      <div className="bg-gray-100 p-4 rounded-lg shadow w-64 text-center md:hidden">
           <h2 className="text-lg text-amber-800 font-bold mb-2">
             {currentOpening.name || "Chess Openings"}
             {currentOpening.eco && <span className="text-sm text-gray-500 ml-2">({currentOpening.eco})</span>}
