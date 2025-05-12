@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ArrowLeft, Trophy, TrendingUp, TrendingDown, Calendar, Clock, User, Flag, Award } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { api, handleApiError } from "@/lib/api"
-import { FullPageLoader } from "@/components/loading-spinner"
+import { ChessLoader } from "@/components/loading-chessboard"
 import { Player } from "@/lib/types"
 
 export default function PlayerDetailPage({ params }: { params:Promise<{ id: string }> }) {
@@ -41,7 +41,7 @@ export default function PlayerDetailPage({ params }: { params:Promise<{ id: stri
   }, [playerId])
 
   if (isLoading) {
-    return <FullPageLoader />
+    return <ChessLoader />
   }
 
   if (error || !player) {

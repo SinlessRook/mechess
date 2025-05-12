@@ -9,7 +9,7 @@ import { ThumbsUp, ThumbsDown, Eye, Clock, Calendar, CastleIcon as ChessKnight }
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { api, handleApiError } from "@/lib/api"
-import { FullPageLoader } from "@/components/loading-spinner"
+import { ChessLoader } from "@/components/loading-chessboard"
 
 export default function FeaturedGamesPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -93,8 +93,8 @@ export default function FeaturedGamesPage() {
     )
   }
 
-  if (isLoading) {
-    return <FullPageLoader />
+  if (!isLoading) {
+    return <ChessLoader/>
   }
 
   if (error) {

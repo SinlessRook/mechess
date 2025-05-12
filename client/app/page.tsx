@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Trophy, Crown } from "lucide-react"
 import { api, handleApiError } from "@/lib/api"
-import { FullPageLoader } from "@/components/loading-spinner"
+import { ChessLoader } from "@/components/loading-chessboard"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 
@@ -43,7 +43,7 @@ export default function LeaderboardPage() {
   }, [])
 
   if (isLoading) {
-    return <FullPageLoader />
+    return <ChessLoader />
   }
 
   if (error) {

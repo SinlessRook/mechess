@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Search, Trophy, TrendingUp, TrendingDown, User, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { api, handleApiError } from "@/lib/api"
-import { FullPageLoader } from "@/components/loading-spinner"
+import { ChessLoader } from "@/components/loading-chessboard"
 import { useDebounce } from "@/hooks/use-debounce"
 
 export default function PlayersPage() {
@@ -57,7 +57,7 @@ export default function PlayersPage() {
   }
 
   if (isLoading) {
-    return <FullPageLoader />
+    return <ChessLoader />
   }
 
   if (error) {
