@@ -93,3 +93,114 @@ export const featuredGamesData: FeaturedGame[] = [
     userDisliked: false,
   },
 ]
+
+export const openings = [
+  {
+    name: "English Opening",
+    sequence: [
+      ["c2", "c4"], ["e7", "e5"], // c4, e5
+      ["g1", "f3"], ["b8", "c6"], // Nf3, Nc6
+      ["g2", "g3"], ["g8", "f6"], // g3, Nf6
+      ["f1", "g2"], ["f8", "c5"], // Bg2, Bc5
+    ],
+    description: "A flexible and strategic flank opening that controls the center from the side.",
+    eco: "A25"
+  },
+  {
+    name: "King's Indian Defense",
+    sequence: [
+      ["d2", "d4"], ["g8", "f6"], // d4, Nf6
+      ["c2", "c4"], ["g7", "g6"], // c4, g6
+      ["g1", "f3"], ["f8", "g7"], // Nf3, Bg7
+      ["e2", "e4"], ["d7", "d6"], // e4, d6
+    ],
+    description: "Black allows White to control the center initially, aiming to counterattack later.",
+    eco: "E60"
+  },
+  {
+    name: "Nimzo-Indian Defense",
+    sequence: [
+      ["d2", "d4"], ["g8", "f6"], // d4, Nf6
+      ["c2", "c4"], ["e7", "e6"], // c4, e6
+      ["g1", "f3"], ["b8", "c6"], // Nf3, Nc6
+      ["b1", "c3"], ["f8", "b4"], // Nc3, Bb4
+    ],
+    description: "A hypermodern opening where Black pins the knight on c3 to control the center indirectly.",
+    eco: "E20"
+  },
+  {
+    name: "Queen's Gambit",
+    sequence: [
+      ["d2", "d4"], ["d7", "d5"], // d4, d5
+      ["c2", "c4"], ["e7", "e6"], // c4, e6
+      ["b1", "c3"], ["g8", "f6"], // Nc3, Nf6
+    ],
+    description: "White offers a pawn to gain control of the center and activate pieces.",
+    eco: "D06"
+  },
+  {
+    name: "Slav Defense",
+    sequence: [
+      ["d2", "d4"], ["d7", "d5"], // d4, d5
+      ["c2", "c4"], ["c7", "c6"], // c4, c6
+      ["g1", "f3"], ["g8", "f6"], // Nf3, Nf6
+    ],
+    description: "A solid defense against the Queen's Gambit with long-term strategic ideas.",
+    eco: "D10"
+  },
+  {
+    name: "Scandinavian Defense",
+    sequence: [
+      ["e2", "e4"], ["d7", "d5"], // e4, d5
+      ["e4", "d5"], ["d8", "d5"], // exd5, Qxd5
+      ["b1", "c3"], ["d5", "a5"], // Nc3, Qa5
+    ],
+    description: "An aggressive defense aiming to challenge White's center early with quick development.",
+    eco: "B01"
+  },
+  {
+    name: "Sicilian Defense",
+    sequence: [
+      ["e2", "e4"], ["c7", "c5"], // e4, c5
+      ["g1", "f3"], ["d7", "d6"], // Nf3, d6
+      ["d2", "d4"], ["c5", "d4"], // d4, cxd4
+      ["f3", "d4"], ["g8", "f6"], // Nxd4, Nf6
+      ["b1", "c3"], // Nc3
+    ],
+    description: "Black’s most popular response to e4, leading to dynamic and tactical play.",
+    eco: "B20"
+  },
+  {
+    name: "Caro-Kann Defense",
+    sequence: [
+      ["e2", "e4"], ["c7", "c6"], // e4, c6
+      ["d2", "d4"], ["d7", "d5"], // d4, d5
+      ["b1", "c3"], ["d5", "e4"], // Nc3, dxe4
+      ["c3", "e4"], // Nxe4
+    ],
+    description: "A solid and resilient opening for Black, offering strong central control and structure.",
+    eco: "B10"
+  },
+  {
+    name: "Ruy Lopez",
+    sequence: [
+      ["e2", "e4"], ["e7", "e5"], // e4, e5
+      ["g1", "f3"], ["b8", "c6"], // Nf3, Nc6
+      ["f1", "b5"], ["a7", "a6"], // Bb5, a6
+      ["b5", "a4"], ["f8", "c5"], // Ba4, Bc5
+      ["e1", "g1"], ["h1", "f1"], // O-O
+    ],
+    description: "A classical opening where White puts pressure on Black's e5 pawn via Bb5.",
+    eco: "C60"
+  },
+  {
+    name: "Italian Game",
+    sequence: [
+      ["e2", "e4"], ["e7", "e5"], // e4, e5
+      ["g1", "f3"], ["b8", "c6"], // Nf3, Nc6
+      ["f1", "c4"], ["f8", "c5"], // Bc4, Bc5
+    ],
+    description: "An old opening that leads to open games and quick piece development.",
+    eco: "C50"
+  }
+];

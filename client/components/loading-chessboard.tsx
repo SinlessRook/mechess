@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { openings } from "@/lib/data"
 
 type Piece = {
   symbol: string
@@ -44,55 +45,7 @@ function getInitialPieces(): Piece[] {
   ]
 }
 
-const openings = [
-  {
-    name: "Ruy Lopez",
-    sequence: [
-      ["e2", "e4"], ["e7", "e5"], // e4, e5
-      ["g1", "f3"], ["b8", "c6"], // Nf3, Nc6
-      ["f1", "b5"], // Bb5
-      ["a7", "a6"], ["b5", "a4"], // a6, Ba4
-      ["f8", "c5"], ["e1", "g1"],["h1", "f1"], // Bc5, O-O
-    ],
-    description: "One of the oldest and most classic openings. White develops the bishop to b5, putting pressure on Black's knight defending the e5 pawn.",
-    eco: "C60"
-  },
-  {
-    name: "Sicilian Defense",
-    sequence: [
-      ["e2", "e4"], ["c7", "c5"], // e4, c5
-      ["g1", "f3"], ["d7", "d6"], // Nf3, d6
-      ["d2", "d4"], ["c5", "d4"], // d4, cxd4
-      ["f3", "d4"], ["g8", "f6"], // Nxd4, Nf6
-      ["b1", "c3"], // Nc3
-    ],
-    description: "Black's most popular response to e4. Leads to asymmetrical positions where both sides have chances to play for a win.",
-    eco: "B20"
-  },
-  {
-    name: "Queen's Gambit",
-    sequence: [
-      ["d2", "d4"], ["d7", "d5"], // d4, d5
-      ["c2", "c4"], ["d5", "c4"], // c4, dxc4
-      ["e2", "e3"], ["b7", "b5"], // e3, b5
-      ["a2", "a4"], ["c8", "b7"], // a4, Bb7
-      ["a4", "b5"], // axb5
-    ],
-    description: "A strategic opening where White offers a pawn to gain control of the center. Leads to rich positional play.",
-    eco: "D06"
-  },
-  {
-    name: "Scholar's Mate",
-    sequence: [
-      ["e2", "e4"], ["e7", "e5"], // e4, e5
-      ["d1", "h5"], ["b8", "c6"], // Qh5, Nc6
-      ["f1", "c4"], ["g8", "f6"], // Bc4, Nf6?? 
-      ["h5", "f7"], // Qxf7#
-    ],
-    description: "A quick checkmate pattern that beginners should be aware of. Black must defend carefully in the opening.",
-    eco: "C50"
-  }
-]
+
 
 export function ChessLoader({ text = "Loading..." }: { text?: string }) {
   const [pieces, setPieces] = useState<Piece[]>(getInitialPieces)
