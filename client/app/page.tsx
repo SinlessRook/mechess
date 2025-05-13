@@ -61,7 +61,8 @@ export default function LeaderboardPage() {
         <h1 className="text-3xl font-bold tracking-tight">{tournamentname?tournamentname:"Tournament"} Leaderboard</h1>
         <div className="flex items-center gap-2 bg-amber-950/50 px-3 py-1 rounded-full">
           <Crown className="h-5 w-5 text-amber-400" />
-          <span className="text-sm font-medium text-amber-300">Current Leader: {Currentleader}</span>
+          <span className="text-sm font-medium text-amber-300 hidden md:inline">Current Leader: {Currentleader}</span>
+          <span className="text-sm font-medium text-amber-300 md:hidden">{Currentleader}</span>
         </div>
       </div>
 
@@ -87,9 +88,9 @@ export default function LeaderboardPage() {
                     <TableRow>
                       <TableHead className="w-16">Rank</TableHead>
                       <TableHead>Player</TableHead>
-                      <TableHead className="text-right">Rating</TableHead>
+                      <TableHead className="text-right hidden md:table-cell">Rating</TableHead>
                       <TableHead className="text-right">Score</TableHead>
-                      <TableHead className="text-right">Performance</TableHead>
+                      <TableHead className="text-right hidden md:table-cell">Performance</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -106,11 +107,11 @@ export default function LeaderboardPage() {
                           )}
                         </TableCell>
                         <TableCell>{player.name}</TableCell>
-                        <TableCell className="text-right">{player.rating}</TableCell>
+                        <TableCell className="text-right hidden md:table-cell">{player.rating}</TableCell>
                         <TableCell className="text-right font-medium">{player.score}</TableCell>
                         <TableCell
                           className={cn(
-                            "text-right font-medium",
+                            "text-right font-medium hidden md:table-cell",
                             player.performance.startsWith("+") ? "text-green-600" : "text-red-600",
                           )}
                         >

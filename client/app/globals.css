@@ -80,6 +80,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -120,6 +121,11 @@
 .chess-board-container {
   position: relative;
   padding: 10px;
+  border-radius: var(--radius);
+  border: 2px solid hsl(var(--chess-dark));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 110%;
+  height: 110%;
 }
 
 .chess-board-labels {
@@ -161,8 +167,6 @@
   width: 384px;
   height: 384px;
   position: relative;
-  border-radius: var(--radius);
-  border: 2px solid hsl(var(--chess-dark));
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -230,10 +234,12 @@
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 0.6;
   }
+
   50% {
     opacity: 1;
   }
@@ -258,12 +264,15 @@
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
   }
 
   .leaderboard-tabs [role="tablist"]::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
+    /* Chrome, Safari, Opera */
   }
 
   .leaderboard-tabs [role="tab"] {
@@ -296,19 +305,30 @@
     margin-bottom: 4rem;
   }
 
+
   .chess-board {
-    width: 240px;
-    height: 240px;
-    padding: 0%;
+    width: 225px;
+    height: 225px;
+    border: none;
+  }
+
+  .chess-board-container {
+    border: none;
   }
 
   .chess-square {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
   }
 
   .chess-piece {
     font-size: 1.5rem;
+  }
+
+  .chess-col-labels,
+  .chess-row-labels {
+    gap: 14.5px;
+    font-size: small;
   }
 }
 
