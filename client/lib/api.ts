@@ -117,7 +117,8 @@ export const api = {
       return cache.data;
     }
 
-    const data = await simulateRequest(featuredGamesData);
+    const res = await axiosinstance.get("/featured/games/");
+    const data = res.data;
     setCache(CACHE_KEYS.FEATURED_GAMES, data);
     return data;
   },

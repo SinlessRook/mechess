@@ -93,7 +93,7 @@ export default function FeaturedGamesPage() {
     )
   }
 
-  if (!isLoading) {
+  if (isLoading) {
     return <ChessLoader/>
   }
 
@@ -146,25 +146,25 @@ export default function FeaturedGamesPage() {
               <div className="flex justify-between items-center mb-2 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
-                  <span>{game.date}</span>
+                  <span>{game.date || "N/A"}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
-                  <span>{game.duration}</span>
+                  <span>{game.duration || "N/A"}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <ChessKnight className="h-4 w-4" />
-                  <span>{game.moves} moves</span>
+                  <span>{game.moves || "N/A"} moves</span>
                 </div>
               </div>
 
               <div className="mb-2">
                 <Badge variant="outline" className="border-amber-800 bg-amber-950/30">
-                  {game.opening}
+                  {game.opening || "N/A"}
                 </Badge>
               </div>
 
-              <p className="text-sm text-muted-foreground">{game.description}</p>
+              <p className="text-sm text-muted-foreground">{game.description || "N/A"}</p>
             </CardContent>
 
             <CardFooter className="flex justify-between p-4 pt-0">
@@ -176,7 +176,7 @@ export default function FeaturedGamesPage() {
                   onClick={() => handleLike(game.id)}
                 >
                   <ThumbsUp className="h-4 w-4" />
-                  <span>{game.likes}</span>
+                  <span>{game.likes || 0}</span>
                 </Button>
                 <Button
                   variant="ghost"
@@ -185,13 +185,13 @@ export default function FeaturedGamesPage() {
                   onClick={() => handleDislike(game.id)}
                 >
                   <ThumbsDown className="h-4 w-4" />
-                  <span>{game.dislikes}</span>
+                  <span>{game.dislikes || 0}</span>
                 </Button>
               </div>
 
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
                 <Eye className="h-4 w-4" />
-                <span>{game.views.toLocaleString()}</span>
+                <span>{game.views.toLocaleString() || 0}</span>
               </div>
             </CardFooter>
           </Card>
