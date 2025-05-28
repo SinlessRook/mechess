@@ -106,8 +106,6 @@ No authentication is required for public Chess.com profiles.
 
 ## 🖼️ Screenshots
 
-Add screenshots of the application below:
-
 ![Leaderboard Screenshot](./Screenshots/leaderboard.png)
 ![Profile Page Screenshot](./Screenshots/profile.png)
 ![Loading Screen](./Screenshots/Loading%20Screen.png)
