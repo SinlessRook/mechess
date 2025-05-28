@@ -2,23 +2,28 @@
 
 **Mechess** is a full-stack web application for individuals to host chess tournaments and track player performance. It provides a sleek, user-friendly interface for managing games, viewing leaderboards, and analyzing player statistics.
 
+---
+
 ## 🌐 Live Demo
 
 Coming soon!
+
+---
 
 ## 📁 Project Structure
 
 ```
 Mechess/
-├── client/            # Frontend (React + Tailwind CSS)
-│   ├── .env           # Contains BACKEND_URL, DEBUG_MODE
+├── client/            # Frontend (Next.js + TypeScript + Tailwind CSS)
+│   ├── .env.local     # Contains NEXT_PUBLIC_BACKEND_URL, NEXT_PUBLIC_DEBUG_MODE
 │   └── ...
 ├── server/            # Backend (Django + PostgreSQL)
 │   ├── .env           # Contains DEBUG, MODE, DATABASE_URL
 │   └── ...
-├── README.md
-└── ...
+└── README.md
 ```
+
+---
 
 ## 🚀 Features
 
@@ -27,15 +32,19 @@ Mechess/
 * 📈 View interactive leaderboards
 * 🔍 Search and filter matches
 * 🌐 Integrates with Chess.com API for profile and game data
-* 🎨 Modern and responsive UI with animations
+* 🎨 Modern and responsive UI with animations (Tailwind CSS + Framer Motion)
+
+---
 
 ## 🛠️ Installation
 
 ### Prerequisites
 
-* Node.js (v16 or later)
+* Node.js (v18 or later)
 * Python (v3.10 or later)
 * PostgreSQL
+
+---
 
 ### 1. Clone the Repository
 
@@ -43,6 +52,8 @@ Mechess/
 git clone https://github.com/SinlessRook/Mechess.git
 cd Mechess
 ```
+
+---
 
 ### 2. Setup Backend (Django)
 
@@ -56,43 +67,50 @@ pip install -r requirements.txt
 # DEBUG=True
 # MODE=development
 # DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DBNAME
-# ALLOWED_HOSTS
+# ALLOWED_HOSTS=127.0.0.1,localhost
 
 python manage.py migrate
 python manage.py runserver
 ```
 
-### 3. Setup Frontend (React)
+---
+
+### 3. Setup Frontend (Next.js + TypeScript)
 
 ```bash
 cd ../client
 npm install
 
-# Create a .env file in the client directory with:
-# VITE_BACKEND_URL=http://localhost:8000
-# VITE_DEBUG_MODE=true
+# Create a .env.local file in the client directory with:
+# NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+# NEXT_PUBLIC_DEBUG_MODE=true
 
 npm run dev
 ```
 
-Visit: `http://localhost:5173`
+Visit: `http://localhost:3000`
+
+---
 
 ## 📂 Environment Variables
 
-### `client/.env`
+### `client/.env.local`
 
-```
-VITE_BACKEND_URL=http://localhost:8000
-VITE_DEBUG_MODE=true
+```env
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+NEXT_PUBLIC_DEBUG_MODE=true
 ```
 
 ### `server/.env`
 
-```
+```env
 DEBUG=True
 MODE=development
 DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DBNAME
+ALLOWED_HOSTS=127.0.0.1,localhost
 ```
+
+---
 
 ## ♟️ Chess.com API Integration
 
@@ -104,11 +122,15 @@ Mechess integrates with the [Chess.com Public API](https://www.chess.com/news/vi
 
 No authentication is required for public Chess.com profiles.
 
+---
+
 ## 🖼️ Screenshots
 
 ![Leaderboard Screenshot](./Screenshots/leaderboard.png)
 ![Profile Page Screenshot](./Screenshots/profile.png)
 ![Loading Screen](./Screenshots/Loading%20Screen.png)
+
+---
 
 ## 🤝 Contributing
 
@@ -117,6 +139,8 @@ No authentication is required for public Chess.com profiles.
 3. Commit your changes (`git commit -am 'Add new feature'`)
 4. Push to the branch (`git push origin feature-name`)
 5. Create a new Pull Request
+
+---
 
 ## 📄 License
 
