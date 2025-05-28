@@ -56,6 +56,7 @@ pip install -r requirements.txt
 # DEBUG=True
 # MODE=development
 # DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DBNAME
+# ALLOWED_HOSTS
 
 python manage.py migrate
 python manage.py runserver
