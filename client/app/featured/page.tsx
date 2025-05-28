@@ -22,7 +22,7 @@ export default function FeaturedGamesPage() {
       try {
         setIsLoading(true)
         const data = await api.getFeaturedGames()
-        setGames(data)
+        setGames(data.featured_games)
         setError(null)
       } catch (err) {
         setError(handleApiError(err))
@@ -40,7 +40,6 @@ export default function FeaturedGamesPage() {
       : filter === "classical"
         ? games.filter((game) => game.likes > 25)
         : games.filter((game) => game.likes <= 40)
-    console.log(filteredGames)
 
   const handleLike = (id: number) => {
     setGames(
