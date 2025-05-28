@@ -119,6 +119,7 @@ export const api = {
 
     const res = await axiosinstance.get("/featured/games/");
     const data = res.data;
+    console.log(data)
     setCache(CACHE_KEYS.FEATURED_GAMES, data);
     return data;
   },

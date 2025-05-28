@@ -47,6 +47,6 @@ def get_featured_games(request):
             }
             output.append(req_game)
 
-        return Response({"featured games":output})
+        return Response({"featured_games":output})
     except Featured.DoesNotExist:
         return Response({"message":"No featured games found"})

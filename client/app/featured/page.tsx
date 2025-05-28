@@ -38,8 +38,9 @@ export default function FeaturedGamesPage() {
     filter === "all"
       ? games
       : filter === "classical"
-        ? games.filter((game) => game.moves > 40)
-        : games.filter((game) => game.moves <= 40)
+        ? games.filter((game) => game.likes > 25)
+        : games.filter((game) => game.likes <= 40)
+    console.log(filteredGames)
 
   const handleLike = (id: number) => {
     setGames(
@@ -191,7 +192,7 @@ export default function FeaturedGamesPage() {
 
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
                 <Eye className="h-4 w-4" />
-                <span>{game.views.toLocaleString() || 0}</span>
+                <span>{game.views || 0}</span>
               </div>
             </CardFooter>
           </Card>
