@@ -60,10 +60,16 @@ def fetch_details(player_id):
         "blitz": format_record(blitz),
     }
 
-    rapid_last = rapid.get("last", {})
-    rapid_record = rapid.get("record", {})
+    # Prefer rapid rating, but fall back to other available Chess.com ratings
+    # so players without rapid history do not incorrectly appear as 0.
+    rating_candidates = [
+        rapid.get("last", {}).get("rating", 0),
+        data.get("chess_bullet", {}).get("last", {}).get("rating", 0),
+        data.get("chess_blitz", {}).get("last", {}).get("rating", 0),
+    ]
+    rating = next((value for value in rating_candidates if value), 0)
 
-    rating = rapid_last.get("rating", 0)
+    rapid_record = rapid.get("record", {})
     wins = rapid_record.get("win", 0)
     losses = rapid_record.get("loss", 0)
     draws = rapid_record.get("draw", 0)
@@ -72,17 +78,42 @@ def fetch_details(player_id):
 
 
 def fetch_games(player):
-    games = (Game.objects.filter(Q(ply1=player) | Q(ply2=player)).order_by('-id')[:6]
-             .values("ply1_id", "ply2__name", "result", "tournament__name")
+    player_id = player.id if hasattr(player, "id") else player
+    games = (
+        Game.objects.filter(Q(ply1=player_id) | Q(ply2=player_id))
+        .select_related("ply1", "ply2", "tournament")
+        .order_by("-id")[:6]
     )
-    return [
-        {
-            "opponent": g["ply2__name"],
-            "result": g["result"],
-            "date": None,
-            "event": g["tournament__name"]
-        } for g in games
-    ]
+
+    recent_games = []
+    for game in games:
+        if game.ply1_id == player_id:
+            opponent = game.ply2.name
+            player_is_white = True
+        else:
+            opponent = game.ply1.name
+            player_is_white = False
+
+        result = game.result
+        if result == "1-0":
+            result = "Win" if player_is_white else "Loss"
+        elif result == "0-1":
+            result = "Win" if not player_is_white else "Loss"
+        elif result == "1/2-1/2":
+            result = "Draw"
+        else:
+            result = result or "Unknown"
+
+        recent_games.append(
+            {
+                "opponent": opponent,
+                "result": result,
+                "date": None,
+                "event": game.tournament.name if game.tournament else None,
+            }
+        )
+
+    return recent_games
 
 
 def fetch_achievements(player):
