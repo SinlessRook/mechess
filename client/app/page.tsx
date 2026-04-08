@@ -25,6 +25,12 @@ export default function LeaderboardPage() {
   const [noActiveTournament, setNoActiveTournament] = useState(cachedNoActiveTournament)
   const isMobile = useIsMobile()
 
+  const safeRounds = Array.isArray(rounds)
+    ? rounds.filter((round): round is { id: number; name: string } => Boolean(round && typeof round.id === "number" && typeof round.name === "string"))
+    : []
+
+  const safeLeaderboardData = leaderboardData && typeof leaderboardData === "object" ? leaderboardData : {}
+
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -105,6 +111,7 @@ export default function LeaderboardPage() {
   }
 
   const defaultRoundName = rounds.length > 0 ? rounds[rounds.length - 1]?.name : ""
+  const activeDefaultRoundName = safeRounds.length > 0 ? safeRounds[safeRounds.length - 1].name : ""
 
   return (
     <div className="space-y-6">
@@ -123,16 +130,16 @@ export default function LeaderboardPage() {
           <CardDescription>View the results from each round of the tournament</CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue={defaultRoundName}>
+          <Tabs defaultValue={activeDefaultRoundName || defaultRoundName}>
             <TabsList className="mb-4 bg-amber-950/50">
-              {rounds.map((round) => (
+              {safeRounds.map((round) => (
                 <TabsTrigger key={round.id} value={round.name}>
                   {isMobile ? round.name.slice(0, 1)+round.name.slice(-1) : round.name}
                 </TabsTrigger>
               ))}
             </TabsList>
 
-            {rounds.map((round) => (
+            {safeRounds.map((round) => (
               <TabsContent key={round.id} value={round.name}>
                 <Table>
                   <TableHeader className="bg-amber-950/30">
@@ -145,7 +152,7 @@ export default function LeaderboardPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(Array.isArray(leaderboardData?.[round.name]) ? leaderboardData[round.name] : []).map((player: any, index: number) => (
+                    {(Array.isArray(safeLeaderboardData[round.name]) ? safeLeaderboardData[round.name] : []).map((player: any, index: number) => (
                       <TableRow key={player.name} className={index % 2 === 0 ? "bg-amber-950/10" : ""}>
                         <TableCell className="font-medium">
                           {player.rank === 1 ? (
