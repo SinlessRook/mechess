@@ -6,33 +6,66 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Trophy, Crown } from "lucide-react"
-import { api, handleApiError } from "@/lib/api"
+import { api, apiCache, handleApiError } from "@/lib/api"
 import { ChessLoader } from "@/components/loading-chessboard"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 
 export default function LeaderboardPage() {
-  const [isLoading, setIsLoading] = useState(true)
+  const cachedLeaderboard = apiCache.getLeaderboard()
+  const hasCachedLeaderboard = cachedLeaderboard !== null
+  const cachedNoActiveTournament = typeof cachedLeaderboard?.error === "string" && cachedLeaderboard.error.toLowerCase().includes("no active tournament")
+
+  const [isLoading, setIsLoading] = useState(!hasCachedLeaderboard)
   const [error, setError] = useState<string | null>(null)
-  const [leaderboardData, setLeaderboardData] = useState<any>(null)
-  const [rounds, setRounds] = useState<any[]>([])
-  const [Currentleader, setCurrentleader] = useState<any>(null)
-  const [tournamentname, setTournamentname] = useState<any>(null)
+  const [leaderboardData, setLeaderboardData] = useState<any>(cachedNoActiveTournament ? {} : (cachedLeaderboard?.players ?? {}))
+  const [rounds, setRounds] = useState<any[]>(cachedNoActiveTournament ? [] : (Array.isArray(cachedLeaderboard?.rounds) ? cachedLeaderboard.rounds : []))
+  const [Currentleader, setCurrentleader] = useState<any>(cachedNoActiveTournament ? null : (cachedLeaderboard?.currentleader ?? null))
+  const [tournamentname, setTournamentname] = useState<any>(cachedNoActiveTournament ? null : (cachedLeaderboard?.currenttournament ?? null))
+  const [noActiveTournament, setNoActiveTournament] = useState(cachedNoActiveTournament)
   const isMobile = useIsMobile()
 
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        setIsLoading(true)
+        if (!hasCachedLeaderboard) {
+          setIsLoading(true)
+        }
         const data = await api.getLeaderboard()
         api.getPlayers()
-        setLeaderboardData(data.players)
-        setRounds(data.rounds)
-        setCurrentleader(data.currentleader)
-        setTournamentname(data.currenttournament)
+
+        const apiError = typeof data?.error === "string" ? data.error : ""
+        const hasNoActiveTournament = apiError.toLowerCase().includes("no active tournament")
+
+        if (hasNoActiveTournament) {
+          setNoActiveTournament(true)
+          setLeaderboardData({})
+          setRounds([])
+          setCurrentleader(null)
+          setTournamentname(null)
+          setError(null)
+          return
+        }
+
+        setNoActiveTournament(false)
+        setLeaderboardData(data?.players ?? {})
+        setRounds(Array.isArray(data?.rounds) ? data.rounds : [])
+        setCurrentleader(data?.currentleader ?? null)
+        setTournamentname(data?.currenttournament ?? null)
         setError(null)
       } catch (err) {
+        const message = handleApiError(err)
+        if (message.toLowerCase().includes("no active tournament")) {
+          setNoActiveTournament(true)
+          setLeaderboardData({})
+          setRounds([])
+          setCurrentleader(null)
+          setTournamentname(null)
+          setError(null)
+          return
+        }
+        setNoActiveTournament(false)
         setError(handleApiError(err))
       } finally {
         setIsLoading(false)
@@ -55,6 +88,24 @@ export default function LeaderboardPage() {
     )
   }
 
+  if (noActiveTournament) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold tracking-tight">Tournament Leaderboard</h1>
+        </div>
+        <Card className="chess-card border-amber-900">
+          <CardHeader className="bg-gradient-to-r from-zinc-900 to-black">
+            <CardTitle>No Active Tournament</CardTitle>
+            <CardDescription>Start a tournament from admin to view leaderboard progress.</CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    )
+  }
+
+  const defaultRoundName = rounds.length > 0 ? rounds[rounds.length - 1]?.name : ""
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -72,7 +123,7 @@ export default function LeaderboardPage() {
           <CardDescription>View the results from each round of the tournament</CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue={rounds[rounds.length - 1].name}>
+          <Tabs defaultValue={defaultRoundName}>
             <TabsList className="mb-4 bg-amber-950/50">
               {rounds.map((round) => (
                 <TabsTrigger key={round.id} value={round.name}>
@@ -94,7 +145,7 @@ export default function LeaderboardPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {leaderboardData[round.name].map((player: any, index: number) => (
+                    {(Array.isArray(leaderboardData?.[round.name]) ? leaderboardData[round.name] : []).map((player: any, index: number) => (
                       <TableRow key={player.name} className={index % 2 === 0 ? "bg-amber-950/10" : ""}>
                         <TableCell className="font-medium">
                           {player.rank === 1 ? (

@@ -8,24 +8,30 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ThumbsUp, ThumbsDown, Eye, Clock, Calendar, CastleIcon as ChessKnight } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
-import { api, handleApiError } from "@/lib/api"
+import { api, apiCache, handleApiError } from "@/lib/api"
 import { ChessLoader } from "@/components/loading-chessboard"
 
 export default function FeaturedGamesPage() {
-  const [isLoading, setIsLoading] = useState(true)
+  const cachedFeaturedGames = apiCache.getFeaturedGames()
+  const hasCachedFeaturedGames = cachedFeaturedGames !== null
+
+  const [isLoading, setIsLoading] = useState(!hasCachedFeaturedGames)
   const [error, setError] = useState<string | null>(null)
-  const [games, setGames] = useState<any[]>([])
+  const [games, setGames] = useState<any[]>(cachedFeaturedGames ?? [])
   const [filter, setFilter] = useState("all")
 
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        setIsLoading(true)
+        if (!hasCachedFeaturedGames) {
+          setIsLoading(true)
+        }
         const data = await api.getFeaturedGames()
-        setGames(data.featured_games)
+        setGames(Array.isArray(data) ? data : [])
         setError(null)
       } catch (err) {
         setError(handleApiError(err))
+        setGames([])
       } finally {
         setIsLoading(false)
       }
@@ -38,8 +44,8 @@ export default function FeaturedGamesPage() {
     filter === "all"
       ? games
       : filter === "classical"
-        ? games.filter((game) => game.likes > 25)
-        : games.filter((game) => game.likes <= 40)
+        ? games.filter((game) => (game?.likes ?? 0) > 25)
+        : games.filter((game) => (game?.likes ?? 0) <= 40)
 
   const handleLike = (id: number) => {
     setGames(

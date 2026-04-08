@@ -1,6 +1,7 @@
 import {  featuredGamesData } from "./data";
 import type { Player, FeaturedGame, playerFormatted } from "./types";
 import axiosinstance from "./axios";
+import axios from "axios";
 
 // Simulate network delay (in milliseconds)
 const SIMULATED_DELAY = 1200;
@@ -23,6 +24,13 @@ interface CacheItem<T> {
 }
 
 // Check if cache is valid
+const getCachedData = <T>(cacheKey: string): T | null => {
+  const cache = isCacheValid<T>(cacheKey);
+  if (cache.isValid && cache.data) {
+    return cache.data;
+  }
+  return null;
+};
 const isCacheValid = <T>(cacheKey: string): { isValid: boolean; data?: T } => {
   try {
     const cachedData = localStorage.getItem(cacheKey);
@@ -119,8 +127,9 @@ export const api = {
 
     const res = await axiosinstance.get("/featured/games/");
     const data = res.data;
-    setCache(CACHE_KEYS.FEATURED_GAMES, data.featured_games);
-    return data;
+    const games = Array.isArray(data?.featured_games) ? data.featured_games : [];
+    setCache(CACHE_KEYS.FEATURED_GAMES, games);
+    return games;
   },
 
   // Get leaderboard data
@@ -135,30 +144,46 @@ export const api = {
     return data;
   },
 
-// Clear all cache
-clearCache: () => {
-  try {
-    // Remove static keys
-    Object.values(CACHE_KEYS).forEach(key => {
-      if (typeof key === 'string') {
-        localStorage.removeItem(key);
-      }
-    });
+  // Clear all cache
+  clearCache: () => {
+    try {
+      // Remove static keys
+      Object.values(CACHE_KEYS).forEach(key => {
+        if (typeof key === 'string') {
+          localStorage.removeItem(key);
+        }
+      });
 
-    // Remove dynamic player cache keys
-    Object.keys(localStorage).forEach(key => {
-      if (key.startsWith("chess_tournament_player_")) {
-        localStorage.removeItem(key);
-      }
-    });
+      // Remove dynamic player cache keys
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith("chess_tournament_player_")) {
+          localStorage.removeItem(key);
+        }
+      });
     
-  } catch (error) {
-    console.error("Error clearing cache:", error);
+    } catch (error) {
+      console.error("Error clearing cache:", error);
+    }
   }
-}}
+}
+
+export const apiCache = {
+  getPlayers: () => getCachedData<Player[]>(CACHE_KEYS.ALL_PLAYERS),
+  getPlayerById: (id: number) => getCachedData<Player>(CACHE_KEYS.PLAYER_DETAILS(id)),
+  getFeaturedGames: () => getCachedData<FeaturedGame[]>(CACHE_KEYS.FEATURED_GAMES),
+  getLeaderboard: () => getCachedData<any>(CACHE_KEYS.LEADERBOARD),
+};
 
 // Utility to handle API errors
 export const handleApiError = (error: unknown): string => {
+  if (axios.isAxiosError(error)) {
+    const apiMessage = error.response?.data?.error ?? error.response?.data?.message;
+    if (typeof apiMessage === "string" && apiMessage.trim().length > 0) {
+      return apiMessage;
+    }
+    return error.message;
+  }
+
   if (error instanceof Error) {
     return error.message;
   }

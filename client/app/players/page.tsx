@@ -9,17 +9,20 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Search, Trophy, TrendingUp, TrendingDown, User, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { api, handleApiError } from "@/lib/api"
+import { api, apiCache, handleApiError } from "@/lib/api"
 import { ChessLoader } from "@/components/loading-chessboard"
 import { useDebounce } from "@/hooks/use-debounce"
 
 export default function PlayersPage() {
   const router = useRouter()
+  const cachedPlayers = apiCache.getPlayers()
+  const hasCachedPlayers = cachedPlayers !== null
+
   const [searchTerm, setSearchTerm] = useState("")
   const [viewMode, setViewMode] = useState("grid")
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(!hasCachedPlayers)
   const [error, setError] = useState<string | null>(null)
-  const [players, setPlayers] = useState<any[]>([])
+  const [players, setPlayers] = useState<any[]>(cachedPlayers ?? [])
 
   // Debounce search term to avoid excessive filtering
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
@@ -27,7 +30,9 @@ export default function PlayersPage() {
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
-        setIsLoading(true)
+        if (!hasCachedPlayers) {
+          setIsLoading(true)
+        }
         const data = await api.getPlayers()
         for (let index = 0; index < data.length; index++) {
           api.getPlayerById(data[index].id)
